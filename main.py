@@ -2,27 +2,27 @@ import pygame
 import random
 from preencher import moverNave
 
-# Initialize Pygame
+# Initializar pygame
 pygame.init()
 
-# Constants
+# Constantes
 WIDTH, HEIGHT = 600, 400
 GROUND_HEIGHT = 40
 GRAVITY = 0.05
 THRUST = 1
 
-# Colors
+# Cores
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 GREEN = (0, 255, 0)
 RED = (255, 0, 0)
 
-# Initialize screen
+# Inicializar a janela
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption('Lander Game')
 
 
-# Lander class
+# Classe da nave
 class Lander:
 
     def __init__(self, x, y):
@@ -40,18 +40,18 @@ class Lander:
                     (self.x - self.width / 2, self.y, self.width, self.height))
 
     def move(self, thrust_x, thrust_y):
-        # Apply thrust and gravity
+        # Aplicar a força de impulso
         self.vx += thrust_x * THRUST
         self.vy += thrust_y * THRUST
 
-        self.vy += GRAVITY  # Gravity affects vertical velocity
+        self.vy += GRAVITY  # Efeito da gravidade
 
-        # Update position
+        # Atualizar a posição
         self.x += self.vx
         self.y += self.vy
 
 
-# Generate mountains
+# Gerar montanhas aleatórias
 def generate_mountains():
     points = []
     for x in range(0, WIDTH, 10):
@@ -59,7 +59,7 @@ def generate_mountains():
     return points
 
 
-# Find a random flat spot in the mountains
+# Gera uma zona plana na montanha
 def generate_flat_spot(mountains):
     flat_start = random.randint(100, WIDTH - 200)
     flat_length = random.randint(50, 150)
@@ -74,7 +74,7 @@ def generate_flat_spot(mountains):
         (flat_start + flat_length) // 10) - 1
 
 
-# Check if lander lands on flat spot
+# Verifica se a nave pousou corretamente
 def check_landing(lander, flat_start, flat_length, flat_y):
     if flat_start <= lander.x <= flat_start + flat_length and lander.y + lander.height >= flat_y:
         if abs(lander.vx) < 1 and abs(lander.vy) < 1:
@@ -83,7 +83,7 @@ def check_landing(lander, flat_start, flat_length, flat_y):
     return False
 
 
-# Main game function
+# Função principal do jogo
 def game():
     clock = pygame.time.Clock()
     lander = Lander(WIDTH // 2, 20)
@@ -99,12 +99,12 @@ def game():
     while running:
         screen.fill(BLACK)
 
-        # Event handling
+        # Eventos
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
 
-        # Controls
+        # Movimento da nave
         if is_first_run:
             is_first_run = False
         else:
@@ -116,19 +116,21 @@ def game():
 
             if thrust_x > 1 or thrust_x < -1:
                 print(
-                    "Erro: O movimento lateral deve ser um valor entre -1 e 1")
+                    "Erro: O movimento lateral deve ser um valor entre -1 e 1.")
+                print("Valor fornecido: ", thrust_x)
                 exit()
             elif thrust_y > 1 or thrust_y < 0:
                 print(
                     "Erro: O movimento vertical deve ser um valor entre 0 e 1")
+                print("Valor fornecido: ", thrust_y)
                 exit()
             else:
                 thrust_y = -thrust_y
 
-            # Move the lander
+            # Mover a nave
             lander.move(thrust_x, thrust_y)
 
-        # Draw mountains
+        # Desenhar montanhas
         mountains_image = pygame.image.load("moon-surface.png").convert_alpha()
         mountains_masked_result = mountains_image.copy()
         mountains_mask_surface = pygame.Surface((WIDTH, HEIGHT))
@@ -139,29 +141,27 @@ def game():
         mountains_masked_result.blit(mountains_mask_surface, (0, 0), None,
                                      pygame.BLEND_RGBA_MULT)
         screen.blit(mountains_masked_result, (0, 0))
-        # Draw flat spot
-        #pygame.draw.rect(screen, RED, (flat_start, flat_y, flat_length, HEIGHT - flat_y))
-
-        # Draw lander
+    
+        # Desenhar a nave
         lander.draw()
 
-        # Check for landing
+        # Verificar se a nave pousou
         if lander.y + lander.height >= flat_y:
             if check_landing(lander, flat_start, flat_length, flat_y):
                 landed = True
                 font = pygame.font.SysFont(None, 55)
-                win_text = font.render("You Landed Safely!", True, GREEN)
+                win_text = font.render("Aterras-te em segurança!", True, GREEN)
                 screen.blit(win_text, (WIDTH // 3, HEIGHT // 2))
             else:
                 landed = True
                 font = pygame.font.SysFont(None, 55)
-                lose_text = font.render("Crash! Game Over!", True, RED)
+                lose_text = font.render("Colidiu! Perdeste o jogo!", True, RED)
                 screen.blit(lose_text, (WIDTH // 3, HEIGHT // 2))
 
-        # Refresh screen
+        # Atualizar a tela
         pygame.display.flip()
 
-        # Cap the frame rate
+        # Limitar os FPS
         clock.tick(60)
 
         if landed:
@@ -169,10 +169,7 @@ def game():
             running = False
 
 
-# Run the game
+# Rodar o jogo
 while True:
     game()
-
-# Quit Pygame
-pygame.quit()
 
