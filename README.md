@@ -11,7 +11,9 @@ A nave tem um motor lateral que permite controlar a sua velocidade horizontal, a
 
 A nave deve aterrar na área de plana para que a missão seja um sucesso!
 
-## Dados de entrada
+Deves editar a função `moverNave` no ficheiro `preencher.py` de forma a automatizar a função sem ser necessário interagires com o terminal.
+
+## Input
 
 - pos_x (float): posição horizontal atual da nave
 - pos_y (float): posição vertical atual da nave
@@ -22,10 +24,8 @@ A nave deve aterrar na área de plana para que a missão seja um sucesso!
 - local_aterrar_altura (int): posição vertical da área de aterragem
 - gravidade (float): valor da gravidade aplicada à nave em cada movimento
 
-## Resposta esperada
+## Output
 
 - (potencia_motor_horizontal,potencia_motor_vertical) (tuplo[float,float]): potência a aplicar ao motor horizontal e vertical respetivamente
-
-## Como utilizar
-
-Deves editar a função `moverNave` no ficheiro `preencher.py` de forma a automatizar a função sem ser necessário interagires com o terminal.
+- -1≤potencia_motor_horizontal≤1
+- 0≤potencia_motor_vertical≤1
