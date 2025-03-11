@@ -27,5 +27,5 @@ Deves editar a função `moverNave` no ficheiro `preencher.py` de forma a automa
 ## Output
 
 - (potencia_motor_horizontal,potencia_motor_vertical) (tuplo[float,float]): potência a aplicar ao motor horizontal e vertical respetivamente
-- -1≤potencia_motor_horizontal≤1
-- 0≤potencia_motor_vertical≤1
+- -1 ≤ potencia_motor_horizontal ≤ 1
+- 0 ≤ potencia_motor_vertical ≤ 1
